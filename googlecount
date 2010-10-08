@@ -1,0 +1,71 @@
+#!/usr/bin/ruby
+# -*- coding: utf-8 -*-
+
+# 二分木のノードに値が設定されている。
+# ノードの部分集合を選び、そのノードの値の和が最大になるようにせよ。
+# ただし連結された親子ノードを選択してはいけない。
+
+# [[あるノードを選ぶときの和の最大値 そのときの木構造] [選ばないときの最大値 そのときの木構造]]
+
+def count(*arg)
+  if arg.length != 1 && arg.length != 3 then
+    # 二分木じゃない
+    p arg
+    exit
+  end
+  n = arg[0]
+  if arg.length == 1 then
+    return [[n, [n]], [0, []]]
+  else
+    res1 = count(*arg[1])
+    res2 = count(*arg[2])
+    v1 = 0
+    r1 = []
+    r2 = []
+    # ノードを選んだとき
+    v1 = n + res1[1][0] + res2[1][0]
+    r1 = [v1, [n, res1[1][1], res2[1],[1]]]
+    # ノードを選ばないとき
+    sel1 = res1[0][0] > res1[1][0] ? 0 : 1
+    sel2 = res2[0][0] > res2[1][0] ? 0 : 1
+    v2 = res1[sel1][0] + res2[sel2][0]
+    r2 = [v2, [0, res1[sel1][1], res2[sel2][1]]]
+    return [[v1, r1], [v2, r2]]
+  end
+end
+
+def maxval(a)
+  v1 = count(*a)[0][0]
+  v2 = count(*a)[1][0]
+  v1 > v2 ? v1 : v2
+end
+
+def dump(a,indent)
+  s = ' ' * (indent * 2)
+  if a.class != Array then
+    puts "#{s}#{a}"
+  else
+    puts "#{s}#{a[0]}"
+    if a.length > 1 then
+      dump(a[1],indent+1)
+      dump(a[2],indent+1)
+    end
+  end
+end
+
+a = [1, [2, 3, 4], [5, [6, 7, [8, 9, 10]], [11, 12, 13]]]
+dump(a,0)
+puts maxval(a)
+
+a = [1, 2, 3]
+dump(a,0)
+puts maxval(a)
+
+a = [1, [2, [3, 1000, 1000], 4], 5]
+dump(a,0)
+puts maxval(a)
+
+a = [1, [2, [3, [4, 1000, 1000], 5], 6], 7]
+dump(a,0)
+puts maxval(a)
+
