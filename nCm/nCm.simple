@@ -1,0 +1,129 @@
+# Yield‚ª‚æ‚­‚í‚©‚Á‚Ä‚È‚¢...
+
+#  http://mixi.jp/view_diary.pl?id=117246615&owner_id=31602
+#
+#  q‹Ÿ‚ÌƒpƒYƒ‹
+# E‚Pl‚Ì‘D“ª‚ª‚Säz‚Ì‘D‚ğŒü‚±‚¤Šİ‚É“n‚·B
+# E‚Säz‚Ì‘D‚Íì‚ğ“n‚é‚Ì‚É‚P•ªA‚Q•ªA‚S•ªA‚W•ª‚©‚©‚éB
+# Eˆê“x‚É‘D‚ğ‚QÇ‚É‚Â‚È‚¢‚Å“n‚·‚±‚Æ‚ª‚Å‚«‚é‚ªA‚»‚Ì‚Ì‘D‚Ì‘¬‚³‚Í’x‚¢•û‚É‚È‚éB
+# ‚±‚ÌğŒ‚ÅA‚P‚T•ª‚Å“n‚·•û–@‚ğŒ©‚Â‚¯‚æB
+# 
+# ‚Æ‚¢‚¤‚Ì‚ªq‹Ÿ‚©‚ço‚³‚ê‚½ƒpƒYƒ‹‚È‚ñ‚Å‚·‚ªA–â‘è‚ğ‘å‚«‚­‚µ‚ÄA‚PC‚QC‚SC‚WC‚P‚UC‚R‚Q•ª‚Ìê‡‚Í‚Ç‚¤‚È‚é‚Å‚µ‚å‚¤B‰½•ª‚Å“n‚¹‚Ü‚·‚©B
+# 
+# ‚³‚ç‚É‚à‚Á‚Æˆê”Ê‰»‚·‚éˆÓ–¡‚Í‚ ‚é‚Å‚µ‚å‚¤‚©H
+
+#here = [1,3,6,9]
+#there = []
+#
+#def ncm(a,m,o=[])
+#  # ”z—ñ
+#  if m > 0 then
+#     b = a.dup
+#     c = b.shift
+#     while !c.nil? do
+#       ncm(b, m-1, o+[c]) { puts "aaaa" }
+#       c = b.shift
+#     end
+##    a.each { |e|
+##      ncm(a-[e], m-1, o+[e])
+##    }
+#  else
+#    #puts o.join(',')
+#    yield
+#  end
+#end
+
+class Array
+#  def ncm(m)
+#    ncm0(self.dup,m,[],blk)
+#  end
+#  
+#  def ncm0(a,m,o=[],blk)
+#    if m > 0 then
+#      b = a.dup
+#      c = b.shift
+#      while !c.nil? do
+#        ncm0(b, m-1, o+[c])
+#        c = b.shift
+#      end
+#    else
+#      yield o
+#    end
+#  end
+#
+  def ncm(m,o=[])
+    if m > 0 then
+      b = self.dup
+      c = b.shift
+      while !c.nil? do
+        b.ncm(m-1,o+[c]){ |arg|
+          yield arg
+        }
+        c = b.shift
+      end
+    else
+      yield o  # Ä‹A“I‚ÉŒÄ‚Î‚ê‚½‚Æ‚«‚Ç‚¤‚È‚é‚Ì‚©ƒCƒ}ƒCƒ`•s–¾B
+    end
+  end
+end
+
+here1 = [1,2,4,8,16,32]
+there1 = []
+
+here1.ncm(2){ |a|
+  there2 = there1 + a
+  here2 = here1 - a
+  v2 = a.max
+  there2.ncm(1){ |a|
+    here3 = here2 + a
+    there3 = there2 - a
+    v3 = v2 + a.max
+    here3.ncm(2){ |a|
+      there4 = there3 + a
+      here4 = here3 - a
+      v4 = v3 + a.max
+      there4.ncm(1){ |a|
+        here5 = here4 + a
+        there5 = there4 - a
+        v5 = v4 + a.max
+        here5.ncm(2){ |a|
+          there6 = there5 + a
+          here6 = here5 - a
+          v6 = v5 + a.max
+          there6.ncm(1){ |a|
+            here7 = here6 + a
+            there7 = there6 - a
+            v7 = v6 + a.max
+            here7.ncm(2){ |a|
+              there8 = there7 + a
+              here8 = here7 - a
+              v8 = v7 + a.max
+              there8.ncm(1){ |a|
+                here9 = here8 + a
+                there9 = there8 - a
+                v9 = v8 + a.max
+                here9.ncm(2){ |a|
+                  there10 = there9 + a
+                  here10 = here9 - a
+                  v10 = v9 + a.max
+
+puts "" + here2.join("-") + " " + there2.join("-")
+puts " " + here3.join("-") + " " + there3.join("-")
+puts "  " + here4.join("-") + " " + there4.join("-")
+puts "   " + here5.join("-") + " " + there5.join("-")
+puts "    " + here6.join("-") + " " + there6.join("-")
+puts "     " + here7.join("-") + " " + there7.join("-")
+puts "      " + here8.join("-") + " " + there8.join("-")
+puts "       " + here9.join("-") + " " + there9.join("-")
+puts "        " + here10.join("-") + " " + there10.join("-") + " " + v10.to_s
+#puts v10
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

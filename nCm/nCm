@@ -1,0 +1,53 @@
+def nCm(a,m,r=[])
+  if m > 0 then
+    b = a.dup
+    while c = b.shift do
+      nCm(b,m-1,r+[c]){ |v| yield v }
+    end
+  else
+    yield r
+  end
+end
+
+def ss(h,t,d,r)
+  if h == [] then
+    yield r
+  else
+    if d then
+      nCm(h,2){ |a| ss(h-a,t+a,!d,r+[a]){ |v| yield v } }
+    else
+      nCm(t,1){ |a| ss(h+a,t-a,!d,r+[a]){ |v| yield v } }
+    end
+  end
+end
+
+def sail(*i)
+  ss(i,[],true,[]){ |v| yield v }
+end
+
+sail(1,2,4,8){ |r|
+  print r.collect { |a| "["+a.join(",")+"]" }.join
+  print " => "
+  puts r.collect { |v| v.max }.inject { |x,y| x+y }
+}
+exit
+
+##########################################################
+
+maxval = 0
+minval = 1000000
+max = []
+min = []
+
+sail(1,2,4,8,16,32){ |r|
+  val = r.collect { |v| v.max }.inject { |x,y| x+y }
+  if val > maxval then
+    maxval = val;  max = r
+  elsif val < minval then
+    minval = val;  min = r
+  end
+#  puts r.collect { |a| "["+a.join(",")+"]" }.join + " => #{val}"
+}
+
+puts max.collect { |a| "["+a.join(",")+"]" }.join + " => #{maxval}"
+puts min.collect { |a| "["+a.join(",")+"]" }.join + " => #{minval}"

@@ -1,0 +1,21 @@
+def permute(a)
+  permute1(a,[])
+end
+
+def permute1(a, prefix)
+  if a.length == 0 then
+    check(prefix)
+  else
+    a.each { |v|
+      b = a.clone
+      b.delete(v)
+      permute1(b,prefix+[v])
+    }
+  end
+end
+
+def check(a)
+  puts a.join(' ')
+end
+
+permute([1,2,3,4,5,6])

@@ -1,0 +1,4 @@
+while true do
+  puts rand(2)
+end
+
