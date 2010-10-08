@@ -75,9 +75,8 @@ population[80] = 978
 
 agerange = (20...70)
 agelimit = 35.0
-trials = 500000
+trials = 100000
 npeople = 11
-underx = 0
 
 totalpopulation = population[agerange].inject(0){ |result, item|
   result + item
@@ -92,18 +91,19 @@ agerange.each { |age|
   }
 }
 
+average = []
+
 (0...trials).each {
   totalage = 0
   (0...npeople).each { |person|
     totalage += ages[rand(totalpopulation)]
   }
-  underx += 1 if totalage.to_f / npeople.to_f < agelimit
+  averageage = (totalage.to_f / npeople.to_f).to_i
+  average[averageage] = average[averageage].to_i + 1
 }
 
-puts underx
-puts trials
-puts underx.to_f / trials.to_f
-puts "#{100.0 * underx.to_f / trials.to_f}%"
-
+agerange.each { |age|
+  puts "#{age} #{'*' * (average[age].to_i / 100)}"
+}
 
 
