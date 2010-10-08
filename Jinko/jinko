@@ -1,95 +1,109 @@
-p = []
-p[20] = 1302
-p[21] = 1347
-p[22] = 1388
-p[23] = 1414
-p[24] = 1463
-p[25] = 1490
-p[26] = 1494
-p[27] = 1478
-p[28] = 1490
-p[29] = 1551
-p[30] = 1589
-p[31] = 1653
-p[32] = 1698
-p[33] = 1783
-p[34] = 1869
-p[35] = 1966
-p[36] = 2002
-p[37] = 1964
-p[38] = 1918
-p[39] = 1864
-p[40] = 1835
-p[41] = 1800
-p[42] = 1793
-p[43] = 1407
-p[44] = 1746
-p[45] = 1636
-p[46] = 1593
-p[47] = 1541
-p[48] = 1522
-p[49] = 1534
-p[50] = 1564
-p[51] = 1521
-p[52] = 1481
-p[53] = 1560
-p[54] = 1613
-p[55] = 1614
-p[56] = 1717
-p[57] = 1812
-p[58] = 1922
-p[59] = 2068
-p[60] = 2266
-p[61] = 2247
-p[62] = 2131
-p[63] = 1335
-p[64] = 1434
-p[65] = 1747
-p[66] = 1695
-p[67] = 1735
-p[68] = 1682
-p[69] = 1526
-p[70] = 1320
-p[71] = 1402
-p[72] = 1429
-p[73] = 1417
-p[74] = 1342
-p[75] = 1251
-p[76] = 1233
-p[77] = 1181
-p[78] = 1115
-p[79] = 1032
-p[80] = 978
+#
+# きっこのブログを検証する
+# http://kikko.cocolog-nifty.com/kikko/2010/10/post-498b.html
+#
 
-total = 0
-(20...70).each { |age|
-  total += p[age]
+# Wikipediaの人口統計情報
+population = []
+population[20] = 1302 # 20歳の人口は130万2千人
+population[21] = 1347
+population[22] = 1388
+population[23] = 1414
+population[24] = 1463
+population[25] = 1490
+population[26] = 1494
+population[27] = 1478
+population[28] = 1490
+population[29] = 1551
+population[30] = 1589
+population[31] = 1653
+population[32] = 1698
+population[33] = 1783
+population[34] = 1869
+population[35] = 1966
+population[36] = 2002
+population[37] = 1964
+population[38] = 1918
+population[39] = 1864
+population[40] = 1835
+population[41] = 1800
+population[42] = 1793
+population[43] = 1407
+population[44] = 1746
+population[45] = 1636
+population[46] = 1593
+population[47] = 1541
+population[48] = 1522
+population[49] = 1534
+population[50] = 1564
+population[51] = 1521
+population[52] = 1481
+population[53] = 1560
+population[54] = 1613
+population[55] = 1614
+population[56] = 1717
+population[57] = 1812
+population[58] = 1922
+population[59] = 2068
+population[60] = 2266
+population[61] = 2247
+population[62] = 2131
+population[63] = 1335
+population[64] = 1434
+population[65] = 1747
+population[66] = 1695
+population[67] = 1735
+population[68] = 1682
+population[69] = 1526
+population[70] = 1320
+population[71] = 1402
+population[72] = 1429
+population[73] = 1417
+population[74] = 1342
+population[75] = 1251
+population[76] = 1233
+population[77] = 1181
+population[78] = 1115
+population[79] = 1032
+population[80] = 978
+
+#
+# agerangeで分布する人間の集合からnpeople人をランダムに選択したときの平均年齢を計算し、
+# agelimit未満になる確率を求める。
+# モンテカルロ式で trial 回計算する
+#
+
+agerange = (20...70)
+agelimit = 35.0
+trials = 500000
+npeople = 11
+underx = 0
+
+totalpopulation = population[agerange].inject(0){ |result, item|
+  result + item
 }
 
 ages = []
 ind = 0
-(20...70).each { |age|
-  (0...p[age]).each {
+agerange.each { |age|
+  (0...population[age]).each {
     ages[ind] = age
     ind += 1
   }
 }
 
-limit = 31.0
-under = 0
-totaltry = 100000
-number = 11
-(0...totaltry).each {
+(0...trials).each {
   totalage = 0
-  (0...number).each { |person|
-    totalage += ages[rand(total)]
+  (0...npeople).each { |person|
+    totalage += ages[rand(totalpopulation)]
   }
-  under += 1 if totalage.to_f / number < limit
+  underx += 1 if totalage.to_f / npeople.to_f < agelimit
 }
 
-puts under
-puts totaltry
-puts under.to_f / totaltry.to_f
+puts underx
+puts trials
+puts underx.to_f / trials.to_f
+puts "#{100.0 * underx.to_f / trials.to_f}%"
 
 
 
