@@ -1,0 +1,192 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<title>じゃんけんゲーム</title>
+</head>
+
+<h1>じゃんけんゲーム</h1>
+
+<ul>
+<li>計算機とじゃんけん勝負します。
+<li>ボタンを押すかわりに1〜3のキーも使えます。
+<li>原理は<a href="http://pitecan.com/blog/2007/02/blog-post_14.html">こちら</a>。
+</ul>
+
+2007/2/13 増井俊之@<a href="http://pitecan.com/">pitecan.com</a>
+<p>
+<hr>
+<p>
+
+<li>計算機の手: <div id="計算機の手" style="font-size:20pt;width:100px;margin:2;"></div>
+<li>あなたの手:
+<input type='button' id="グー" onclick='bet("g")' value="グー">
+<input type='button' id="チョキ" onclick='bet("c")' value="チョキ">
+<input type='button' id="パー" onclick='bet("p")' value="パー">
+<li>戦績:
+<span id="win">0</span>勝
+<span id="lose">0</span>敗
+<span id="draw">0</span>分け
+<table id='戦績'>
+<tr><th>計算機の手</th><th>あなたの手</th><th>勝敗</th></tr>
+</table>
+
+<script type="text/javascript">
+
+function Predict(level){
+  this.level = level;
+  this.history = '';
+  this.accum = [];
+  this.tokens = [];
+}
+
+Predict.prototype.add = function(c){
+  this.tokens[c] = true;
+  this.history += c;
+  for(var i=1;i<=this.level;i++){
+    if(this.history.length < i) continue;
+    var s = this.history.substr(this.history.length-i,i);
+    var v = this.accum[s];
+    if(typeof(v) == 'undefined') v = 0;
+    this.accum[s] = v+1;
+  }
+}
+
+Predict.prototype.predict = function(){
+  var res = [];
+  var n = 0;
+  for(var i=1;i<=this.level;i++){
+    s = this.history.substr(this.history.length+i-this.level,this.level-i);
+//  s = this.history.substr(i-this.level,this.level-i);
+    if(typeof(s) == 'undefined' || s == '') break;
+    for(c in this.tokens){
+      var r = s + c;
+      if(this.accum[r]){
+        if(this.accum[r] > n){
+          n = this.accum[r];
+          res = [c];
+        }else if(this.accum[r] == n){
+          res.push(c);
+        }
+      }
+    }
+    if(res.length > 0) break;
+  }
+  // this.dump();
+  return res;
+}
+
+Predict.prototype.dump = function(){
+  for(key in this.accum){
+    alert(key + " " + this.accum[key]);
+  }
+}
+
+var round_no = 0;
+var gcp_computer = [];
+var gcp_user = [];
+var win = 0;
+var lose = 0;
+var draw = 0;
+
+function hide(){
+  var k = document.getElementById('計算機の手');
+  k.style.backgroundColor = 'black';
+  k.style.color = 'black';
+}
+function show(){
+  var k = document.getElementById('計算機の手');
+  k.style.backgroundColor = 'white';
+  k.style.color = 'black';
+}
+
+function show_round(){
+  if(gcp_computer[round_no] == gcp_user[round_no]){
+    r = '△';
+    draw++;
+    document.getElementById('draw').innerHTML = String(draw);
+  }
+  else if(gcp_computer[round_no] == 'g' && gcp_user[round_no] == 'c' ||
+          gcp_computer[round_no] == 'c' && gcp_user[round_no] == 'p' ||
+          gcp_computer[round_no] == 'p' && gcp_user[round_no] == 'g'){
+    r = '×';
+    lose++;
+    document.getElementById('lose').innerHTML = String(lose);
+  }
+  else {
+    r = '◯';
+    win++;
+    document.getElementById('win').innerHTML = String(win);
+  }
+  s = document.getElementById('戦績');
+  e = document.createElement('tr');
+  f = document.createElement('td');
+  f.innerHTML = gcp2name(gcp_computer[round_no]);
+  e.appendChild(f);
+  f = document.createElement('td');
+  f.innerHTML = gcp2name(gcp_user[round_no]);
+  e.appendChild(f);
+  f = document.createElement('td');
+  f.innerHTML = r;
+  e.appendChild(f);
+  s.appendChild(e);
+  round_no++;
+}
+
+function bet(v){
+  show();
+  gcp_user[round_no] = v;
+  p.add(v);
+  show_round();
+  predict_next_gcp();
+  setTimeout('show_next_gcp()',1000);
+}
+
+function gcp2name(c){
+  return c == 'c' ? 'チョキ' : c == 'g' ? 'グー' : 'パー';
+}
+
+function predict_next_gcp(){
+  // 次の手を計算()
+  r = p.predict();
+  c = r[Math.floor(Math.random() * r.length)];
+  //c = r[0];
+  gcp_computer[round_no] = (c == 'p' ? 'c' : c == 'g' ? 'p' : 'g');
+}
+
+function show_next_gcp(){
+  // 次の手を隠して表示
+  var k = document.getElementById('計算機の手');
+  hide();
+  k.innerHTML = gcp2name(gcp_computer[round_no]);
+}
+
+function keycode(event)
+{
+  if(window.event) return window.event.keyCode;
+  else return event.which
+}
+
+document.onkeypress = keypress;
+function keypress(event)
+{
+  var i = keycode(event);
+  if(i == 0x31) bet('g');
+  if(i == 0x32) bet('c');
+  if(i == 0x33) bet('p');
+}
+
+var p = new Predict(5);
+p.add('g');
+p.add('c');
+p.add('p');
+p.add(Math.random() < 0.33 ? 'g' : Math.random() < 0.66 ? 'c' : 'p');
+p.add(Math.random() < 0.33 ? 'g' : Math.random() < 0.66 ? 'c' : 'p');
+p.add(Math.random() < 0.33 ? 'g' : Math.random() < 0.66 ? 'c' : 'p');
+
+predict_next_gcp();
+show_next_gcp();
+
+</script>
+
+</body>
+</html>

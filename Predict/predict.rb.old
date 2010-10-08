@@ -1,0 +1,76 @@
+oclass Hash
+  # 大きな値をもつキーの配列を求める
+  # e.g. a = {'a' => 1, 'b' => 3, 'c' => 2, 'd' => 1, 'e' => 3}
+  #      a.major --> ['b', 'e']
+  def major
+    a = []
+    count = 0
+    each { |key,val|
+      ival = val.to_i
+      if ival ==  count then
+        a << key
+      elsif ival > count then
+        count = ival
+        a = [key]
+      end
+    }
+    a
+  end
+end
+
+class Predict
+  def initialize(histlevel)
+    @histlevel = histlevel
+    @history = Array.new(histlevel,'')
+    @accum = Array.new(histlevel+1)
+    (0..histlevel).each { |i|
+      @accum[i] = Hash.new
+    }
+    @tokens = []
+  end
+
+  attr :tokens,true
+
+  def tail(n)
+    if @history[@histlevel-n] == '' then
+      nil
+    else
+      @history[@histlevel-n,n].join('')
+    end
+  end
+
+  def add(c)
+    @tokens << c
+    @tokens.uniq!
+    @history.shift
+    @history.push(c)
+    (1..@histlevel).each { |len|
+      s = tail(len)
+      if s then
+      #      p s
+      #      p s.length
+        @accum[s.length][s] = @accum[s.length][s].to_i + 1
+      end
+    }
+  end
+
+  def predict
+    a = []
+    (@histlevel-1).downto(0){ |n|
+      t = tail(n)
+      if t then
+        h = {}
+      (('a'..'z').to_a + ('0'..'9').to_a).each { |c|
+          h[c] = @accum[n+1][t+c]
+        }
+        a = h.major
+        break if h[a[0]].to_i > 0
+      end
+    }
+    a
+  end
+
+  def tokens
+    @tokens
+  end
+end

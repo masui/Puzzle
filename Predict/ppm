@@ -1,0 +1,105 @@
+#
+#	N文字入力したとき、
+#	1文字の例はN個、2文字の例はN-1個、... 存在することになる。
+#	ウェイト: w0～w4 
+#
+#	現在の文字列が '....uvwxyz' のときに次の文字が c である確率は、
+#
+#	w0 × (cの発生回数 / ('a', 'b', ...の発生個数の総数)) +
+#	w1 × (zcの発生回数 / (za, zb, .... の発生個数の総数)) +
+#	w2 × (yzcの発生回数 / (yza, yzb, .... の発生個数の総数)) +
+#                  cx                ctotal
+#
+#
+#
+
+require 'termios'
+
+term = Termios.tcgetattr($stdin)
+origterm = term.dup
+term.lflag &= ~(Termios::ECHO | Termios::ICANON)
+Termios.tcsetattr($stdin, Termios::TCSANOW, term)
+
+class Ppm
+  def initialize
+    @buf = ''
+    @maxhist = 8
+    @predicted = ''
+    @count = 0
+  end
+  
+  def process(c)
+    s = sprintf("%c",c)
+    if @predicted == s then
+      puts "==== #{@count} ===="
+      exit(0)
+    end
+    puts "predicted -- #{@predicted}"
+    @count = @count + 1
+
+    @buf += s
+    #    puts @buf
+    @len = @buf.length
+    a = {}
+    (0..@len-1).each { |start|
+      (1..@maxhist).each { |l|
+        if start+l <= @len then
+          ss = @buf[start,l]          
+          a[ss] = a[ss].to_i + 1
+        end
+      }
+    }
+    
+    maxc = nil
+    maxcount = 0
+    (@maxhist-1).downto(1){ |i|
+#      maxc = nil
+#      maxcount = 0
+      tail = @buf[@len-i,i]
+      a.each { |s,n|
+        if s.length == i then
+          ['a','s','d','f'].each { |c|
+            cand = tail + c
+            if a[cand].to_i > maxcount then
+              maxc = c
+              maxcount = a[cand].to_i
+            end
+          }
+        end
+      }
+      break if maxc
+    }
+    maxc = 'X' unless maxc
+    # puts "-----#{maxc}-----"
+    @predicted = maxc
+	
+
+#    (0...@maxhist).each { |i|
+#      if @len-i >= 0 then
+#        tail = @buf[@len-i,i]
+#        puts "tail+s = #{tail+s}"
+#        cx = a[tail+s].to_i
+#        puts "tail = <#{tail}>"
+#        puts cx
+#      end
+#    }
+
+  end
+end
+
+
+ppm = Ppm.new
+
+#srand(Time.now.to_i)
+#while true do
+#  c = (['a','s','d','f'][rand(4)])[0]
+#  ppm.process(c)
+#end
+
+while c = STDIN.getc 
+  break if c == 4
+  ppm.process(c)
+end
+
+Termios.tcsetattr($stdin, Termios::TCSANOW, origterm)
+

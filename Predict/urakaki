@@ -1,0 +1,30 @@
+require 'predict'
+
+u = Predict.new(6)
+u.tokens = ['0', '1']
+u.add('0')
+u.add('0')
+
+
+# 結構乱数ぽく出力される。検定してみればよいかも。
+
+# というのは嘘で、rand()を呼ばなければ全然乱数にならない
+
+toggle = 0
+
+while true do
+  a = u.predict                # 次のトークンを予測
+  # c = a[rand(a.length)]        # その中からひとつ選ぶ
+  c = a[0]
+  if a.length > 1 then
+    c = a[toggle]
+    toggle = (toggle == 0 ? 1 : 0)
+  end
+  non = u.tokens - [c]
+  if non.length != 0 then
+    c = non[rand(non.length)]
+  end
+
+  puts c
+  u.add(c)
+end
