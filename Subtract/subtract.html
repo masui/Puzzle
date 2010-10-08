@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>title</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<link rel="stylesheet" href="test.css" type="text/css">
+</head>
+<body>
+
+<span id='q' style="font-size:24pt;"></span>
+
+<p>
+<div id='answers'></div>
+
+<br clear='all'>
+
+<div style='font-size:20pt;'>
+正解: <span id="correct"></span>
+不正解: <span id="wrong"></span>
+Time: <span id="tim"></span>
+</div>
+
+
+<script type="text/javascript">
+
+function setup(){
+  d = document.getElementById('answers');
+  for(i=0;i<10;i++){
+    e = document.createElement('div');
+    e.style.styleFloat = 'left'; // !!!!!!
+    e.style.cssFloat = 'left';
+    e.style.margin = '0px';
+    e.style.padding = '0px';
+    e.style.width = 40;
+    e.style.height = 40;
+    e.style.backgroundColor = (i % 2 == 0 ? '#dddddd' : '#eeeeee');
+    d.appendChild(e);
+  
+    s = document.createElement('span');
+    s.style.fontSize = '20pt';
+    s.id = 'span' + i;
+    e.appendChild(s);
+  }
+}
+
+function newansarray(){
+  var ans = [];
+  for(i=0;i<10;i++){
+    ans[i] = i;
+  }
+  for(i=0;i<10;i++){
+    var j = Math.floor(Math.random() * (10-i));
+    var tmp = ans[j+i];
+    ans[j+i] = ans[i];
+    ans[i] = tmp;
+  }
+  
+  for(i=0;i<10;i++){
+    s = document.getElementById('span' + i);
+    s.innerHTML = '<center onclick="answer(' + ans[i] + ');">' + String(ans[i])  + '</center>';
+  }
+}
+
+function newquestion(){
+  ans = Math.floor(Math.random() * 10);
+  sub2 = Math.floor(Math.random() * 10);
+  sub1 = ans + sub2;
+  document.getElementById('q').innerHTML = sub1 + " - " + sub2 + " = ";
+}
+
+function showresult(){
+  document.getElementById('correct').innerHTML = String(correct);
+  document.getElementById('wrong').innerHTML = String(wrong);
+}
+
+function showtime(){
+  var d = new Date() - start;
+  document.getElementById('tim').innerHTML = d;
+  if(correct < 10){
+    setTimeout('showtime()',20);
+  }
+}
+
+var start = new Date();
+var correct = 0;
+var wrong = 0;
+
+showtime();
+setup();
+
+newansarray();
+newquestion();
+showresult();
+
+function answer(n){
+  if(n == ans) correct++;
+  else wrong++;
+  showresult();
+  if(correct < 10){
+    newansarray();
+    newquestion();
+  }
+}
+
+</script>
+
+</body>
+</html>
+
