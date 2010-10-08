@@ -1,0 +1,67 @@
+8
+
+dir
+2204
+svn+ssh://pitecan.com/home/masui/SVNROOT/Puzzle/Cinderella/Kemp.bak
+svn+ssh://pitecan.com/home/masui/SVNROOT
+
+
+
+2007-02-11T22:25:05.293318Z
+2057
+masui
+
+
+svn:special svn:externals svn:needs-lock
+
+kemp.html
+file
+
+
+
+
+2007-02-11T22:24:11.000000Z
+cf2394b340c39b4dc3eaebcf88ec05b0
+2007-02-11T22:25:05.293318Z
+2057
+masui
+has-props
+
+cindyrun.jar
+file
+
+
+
+
+2007-02-11T22:24:11.000000Z
+ab4a1d533bc71b62fe91614604896b61
+2007-02-11T22:25:05.293318Z
+2057
+masui
+has-props
+
+kemp.cdy
+file
+
+
+
+
+2007-02-11T22:24:11.000000Z
+227afd537ea514723fe6456c44677aac
+2007-02-11T22:25:05.293318Z
+2057
+masui
+has-props
+
+index.html
+file
+
+
+
+
+2007-02-11T22:24:11.000000Z
+d9f011cdbbd4e4288f8e4d2bb34f7b9c
+2007-02-11T22:25:05.293318Z
+2057
+masui
+

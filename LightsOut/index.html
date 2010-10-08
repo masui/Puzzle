@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>LightsOut</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<script language="JavaScript" src="lightsout.js"></script>
+</head>
+<body style='background-color:#ffffdd;'>
+
+<h2>ライツアウトゲーム</h2>
+
+<div style="float:left;">
+  <div id='l4'></div>
+  <script type="text/javascript">
+  new LightsOut('l4',4,4);
+  </script>
+  <p>
+  <div id='l5'></div>
+  <script type="text/javascript">
+  new LightsOut('l5');
+  </script>
+</div>
+
+
+<div style="float:left;margin:5pt;width:400pt;">
+<ul>
+<li>クリックすると駒の周囲の5駒が反転します。
+<li>全部青にするのが目標です。
+<li><a href="http://mathworld.wolfram.com/LightsOutPuzzle.html">詳しい解説</a> @ Wolfram MathWorld
+<li><a href="http://www.ic-net.or.jp/home/takaken/nt/light/">ライツアウトを解く</a> @ takaken氏
+<li>前田篤彦ほか：「<a href="http://ci.nii.ac.jp/naid/110002911757/">巡回パズルのメディア変換とパズル・ジェネレータの試作</a>」,
+情報処理学会研究報告, HI101-6, pp.41-48, 2002/11
+にライツアウトの分析が書いてあるそうです。
+<li>銭谷氏による解説:
+<pre style="background-color:#ffccff;padding:4;">
+同じ箇所を２回押すと２回反転してもとに戻るので、
+ある箇所を押す回数は０回か１回です。
+
+１行目の各列を押す回数を適当に設定して、
+例えば、順に 1,1,0,0,0 回ずつ押したとすると
+
+　ＡＢＣＤＥ
+１黄黄青黄黄
+
+のようになるはずです。次に２行目の押し方を考えると、
+１Ａを青にするためには、必ず２Ａを押す必要があります。
+２Ｂも同様。２Ｃは押さなくていい。・・・という感じで、
+次の行以降は全て一意に決まるはずです。
+
+ですから、最初の行のパターン：2^5 = 32 通りを
+力ずくで検索すると良いと思います。 
+</pre>
+<li><a href="lightsout.js">JavaScriptソース</a>
+<li><a href="http://pitecan.com/Puzzle/">パズルいろいろ</a>
+</ul>
+</div>
+
+<br clear='all'>
+
+<hr>
+2007/5/15 Toshiyuki Masui @ pitecan.com
+
+</body>
+</html>
+

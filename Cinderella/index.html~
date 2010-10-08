@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<title>e</title>
+<script language="JavaScript" src="test.js"></script>
+<script type="text/javascript">
+....
+</script>
+<link rel="stylesheet" href="test.css" type="text/css">
+<style type="text/css">
+<!--
+-->
+</style>
+</head>
+<body background='http://pitecan.com/BG/dyinggif.cgi?id=20060714000000'>
+
+<script type="text/javascript">
+function cleanbg(){
+  document.body.style.backgroundImage = 'none';
+  document.body.style.backgroundColor = '#ffffdd';
+}
+setTimeout(cleanbg,5000);
+
+</script>
+
+</body>
+</html>
+
+
