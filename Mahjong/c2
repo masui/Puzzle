@@ -1,0 +1,70 @@
+# -*- coding: utf-8 -*-
+#
+# 清一色のあらゆるパタンを生成してアガっているかチェック
+# dupを使わないバージョン
+#
+
+def mindex(a)
+  (0..a.length-1).each { |i|
+    return i if a[i] > 0
+  }
+  return -1
+end
+
+def agari?(a)
+  chitoi = true
+  (0..8).each { |i|
+    if a[i] != 0 && a[i] != 2 then
+      chitoi = false
+    end
+  }
+  # return true if chitoi
+  (0..8).each { |atama|
+    if a[atama] >= 2 then
+      a[atama] = a[atama] - 2
+      res = agari2?(a)
+      a[atama] = a[atama] + 2
+      return true if res
+    end
+  }
+  return false;
+end
+
+def agari2?(a)
+  i = mindex(a)
+  return true if i < 0
+  if a[i] >= 3 then 
+    a[i] = a[i] - 3
+    res = agari2?(a)
+    a[i] = a[i] + 3
+    return true if res
+  end
+  if i+2 <= 8 && a[i] > 0 && a[i+1] > 0 && a[i+2] > 0 then
+    a[i] = a[i] - 1
+    a[i+1] = a[i+1] - 1
+    a[i+2] = a[i+2] - 1
+    res = agari2?(a)
+    a[i] = a[i] + 1
+    a[i+1] = a[i+1] + 1
+    a[i+2] = a[i+2] + 1
+    return true if res
+  end
+  return false
+end
+
+# n〜9 からpieces枚を選ぶ
+def out(n,pieces,a)
+  if n == 9 then
+    if pieces == 0 then
+      agari = agari?(a)
+      puts a.join(",") + " " + (agari ? "o" : "x")
+    end
+  else
+    (0..4).each { |k|
+      a[n] = k
+      out(n+1,pieces-k,a)
+    }
+  end
+end
+
+out(0,14,[])
