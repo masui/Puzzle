@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+#
+# 清一色がアガっているかチェックする
+#
+# 入力は 4,2,3,2,1,0,0,2,0 みたいな形式
+# 一万が4枚、二万が2枚、...
+#
+# 再帰を使わない方法
+# 一番下に刻子があればそれを採用、なければ順子を採用という方針
+#
+
+def mindex(a) # 一番数が小さな牌
+  a.each_with_index { |v,i|
+    return i if v > 0
+  }
+  return -1
+end
+
+def agari?(a)
+  chitoi = true
+  9.times { |i|
+    if a[i] != 0 and a[i] != 2 then
+      chitoi = false
+    end
+  }
+  return true if chitoi
+  9.times { |atama|
+    if a[atama] >= 2 then
+      a2 = a.dup
+      a2[atama] -= 2
+      res = agari2?(a2)
+      return true if res
+    end
+  }
+  return false;
+end
+
+def agari2?(a)
+  (0..4).each { |c|
+    i = mindex(a)
+    return true if i < 0
+    # 刻子から調べることで全部チェックできるはず
+    if a[i] >= 3 then
+      a[i] -= 3
+    elsif i+2 <= 8 and a[i] > 0 and a[i+1] > 0 and a[i+2] > 0 then
+      a[i] -= 1
+      a[i+1] -= 1
+      a[i+2] -= 1
+    else
+      return false
+    end
+  }
+  return false
+end
+
+ARGF.each { |line|
+  a = line.chomp.split(/,/).map { |i| i.to_i }
+  puts a.join(",") + " " + (agari?(a) ? "o" : "x")
+}
