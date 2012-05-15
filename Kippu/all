@@ -1,0 +1,36 @@
+def add(s) s.push(s.pop + s.pop) end
+def sub(s) v = s.pop; s.push(s.pop - v) end
+def mul(s) s.push(s.pop * s.pop) end
+def div(s) v = s.pop; s.push(s.pop / v) end
+
+def calc(list)
+  s = []
+  list.each { |v|
+    v.class == Symbol ? method(v).call(s) : s.push(Float(v))
+  }
+  s
+end
+
+def check0(list,args,nop,ops)
+  if args.length == 0 && nop == 0 then
+    puts "#{calc(list)[0]} #{list.join(' ')}"
+  else
+    if calc(list).length >= 2 && nop > 0 then
+      ops.each { |op|
+        return if check0(list.dup.push(op),args,nop-1,ops)
+      }
+    end
+    args.each { |arg|
+      args2 = args.dup
+      args2.delete_at(args2.index(arg))
+      return if check0(list.dup.push(arg),args2,nop,ops)
+    }
+    false
+  end
+end
+
+def check(args,ops)
+  check0([],args,args.length-1,ops)
+end
+
+check([1,2,3,4],[:add,:sub,:mul,:div])

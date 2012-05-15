@@ -1,0 +1,49 @@
+def format(list)
+  a = []
+  list.each { |v|
+    if v.class == Symbol then
+      v1 = a.pop
+      v2 = a.pop
+      a.push("(#{v2}#{v}#{v1})")
+    else
+      a.push(v)
+    end
+  }
+  a[0].sub(/^\(/,'').sub(/\)$/,'')
+end
+
+def calc(list)
+  s = []
+  list.each { |v|
+    if v.class == Symbol then
+      vv = s.pop
+      v = s.pop.method(v).call(vv)
+    end
+    s.push(Float(v))
+  }
+  s
+end
+
+def check0(list,args,nop,ops)
+  if args.length == 0 && nop == 0 then
+    puts "#{calc(list)[0]} #{list.join(' ')}"
+  else
+    if calc(list).length >= 2 && nop > 0 then
+      ops.each { |op|
+        return if check0(list.dup.push(op),args,nop-1,ops)
+      }
+    end
+    args.each_with_index { |arg,i|
+      args2 = args.dup
+      args2.delete_at(i)
+      return if check0(list.dup.push(arg),args2,nop,ops)
+    }
+    false
+  end
+end
+
+def check(args,ops)
+  check0([],args,args.length-1,ops)
+end
+
+check([1,2,3,4],[:+, :-, :*, :/])
