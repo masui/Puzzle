@@ -1,4 +1,8 @@
 #!/usr/bin/ruby
+# -*- coding: utf-8 -*-
+#
+# フィボナッチ数列を出力
+#
 fib = [1,1]
 loop do
   puts fib[0]
