@@ -1,0 +1,13 @@
+#!/usr/bin/ruby
+#
+# 2, 3, 5, 13, 89, 233, 1597, 28657, 514229, 433494437, 2971215073, ...
+#
+
+v = {}
+ARGF.each { |line|
+  if v[line] then
+    puts line
+  else
+    v[line] = true
+  end
+}

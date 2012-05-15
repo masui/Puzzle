@@ -1,0 +1,7 @@
+#!/usr/bin/ruby
+fib = [1,1]
+loop do
+  puts fib[0]
+  fib.push fib.shift + fib[0]
+end
+
