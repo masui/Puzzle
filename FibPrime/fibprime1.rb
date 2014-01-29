@@ -3,8 +3,8 @@
 # 2, 3, 5, 13, 89, 233, 1597, 28657, 514229, 433494437, 2971215073, ...
 #
 
-IO.popen("./fib","r"){ |ffib|
-  IO.popen("./prime","r"){ |fprime|
+IO.popen("./fib1.rb","r"){ |ffib|
+  IO.popen("./prime1.rb","r"){ |fprime|
     fib = ffib.gets.to_i
     prime = fprime.gets.to_i
     while true do

@@ -8,7 +8,7 @@ class Prime
     primes = [2]
     puts 2
     cand = 3
-    while true do
+    loop do
       lim = Math.sqrt(cand).floor
       primes.each { |prime|
         if prime > lim then
