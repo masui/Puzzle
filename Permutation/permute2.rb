@@ -11,7 +11,7 @@ def each_permute(n)
 end
 
 if $0 == __FILE__ then
-  each_permute(8){ |pat|
+  each_permute(4){ |pat|
     puts pat.join(',')
   }
 end
