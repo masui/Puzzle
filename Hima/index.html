@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>暇さがし</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+	  $('body').children().remove()
+	  var randx = Math.floor(Math.random()*10)
+	  var randy = Math.floor(Math.random()*10)
+	  var randc = "叚瑕遐"[Math.floor(Math.random()*3)]
+	  for(var y=0;y<10;y++){
+              for(var x=0;x<10;x++){
+		  var c = (x == randx && y == randy ? randc : '暇')
+                  $('<span>')
+                      .text(c)
+                      .css('position','absolute')
+                      .css('left',x*20+10)
+                      .css('top',y*20+10)
+                      .appendTo($('body'))
+              }
+	  }
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
+
