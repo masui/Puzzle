@@ -81,31 +81,3 @@ setInterval(function(){
 	}
     }
 },step)
-
-/*
-setTimeout(function(){
-    $(`#rect${changex}${changey}`)
-	.css('border','solid')
-	.css('border-color','#ddd')
-	.css('z-index','100')
-},5000);
-
-
-count = 0;
-sec = 5
-maxcount = sec * 1000 / 10;
-
-function disp(){
-    r = Math.floor((startr * (maxcount-count) + endr * count) / maxcount);
-    g = Math.floor((startg * (maxcount-count) + endg * count) / maxcount);
-    b = Math.floor((startb * (maxcount-count) + endb * count) / maxcount);
-    $(`#rect${changex}${changey}`).css('background-color',colorstr(r,g,b));
-    if(count < maxcount){
-        count += 1;
-      	setTimeout(disp,10);
-    }
-}
-
-setTimeout(disp,30);
-*/
-
