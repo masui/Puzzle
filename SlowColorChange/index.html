@@ -1,10 +1,95 @@
+<!--
+  色がゆっくり変化することに気付けるかの実験
+-->
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Change Blindness</title>
+    <title>Change Blindness実験</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   </head>
   <body>
-    <script src="slow.js"></script>
+    <script type="text/javascript">
+      function hex2(val){
+          return ('0'+val.toString(16)).slice(-2)
+      }
+      
+      function random(n){
+          return Math.floor(Math.random()*n)
+      }
+      
+      function colorstr(r,g,b){
+          return `#${hex2(r)}${hex2(g)}${hex2(b)}`
+      }
+      
+      let changex = random(5)    // 変化する矩形の位置
+      let changey = random(5)
+      
+      for(let x=0;x<5;x++){
+          for(let y=0;y<5;y++){
+              $('<div>')
+                  .css('position','absolute')
+                  .css('width','100')
+                  .css('height','100')
+                  .css('top',y*100+20)
+                  .css('left',x*100+20)
+                  .css('background-color',
+                       colorstr(random(256),random(256),random(256)))
+                  .attr('id',`rect${x}${y}`)
+		  .appendTo($('body'))
+          }
+      }
+      
+      // 変化前の色
+      let startr = random(256)
+      let startg = random(256)
+      let startb = random(256)
+      // 変化後の色
+      let endr, endg, endb
+      
+      // 変化後の色を決める
+      // 変化前の色とかなり違う色を選ぶ
+      while(true){
+          endr = random(256)
+          endg = random(256)
+          endb = random(256)
+          if(Math.abs(endr-startr) > 80 &&
+             Math.abs(endg-startg) > 80 &&
+             Math.abs(endb-startb) > 80){
+              break
+          }
+      }
+      
+      const period1 = 10000 // ゆっくり色を変化させる時間
+      const step = 100      // 色変化の時間間隔
+      const period2 = 7000  // 点滅させる時間
+      const step2 = 1000    // 点滅周期
+      let msec = 0          // 現在時刻
+      setInterval(function(){ // setInterval()でループを表現
+          msec += step
+          if(msec < period1){ // 色を変化させる
+              let r = Math.floor((startr * (period1-msec) + endr * msec) / period1)
+              let g = Math.floor((startg * (period1-msec) + endg * msec) / period1)
+              let b = Math.floor((startb * (period1-msec) + endb * msec) / period1)
+              $(`#rect${changex}${changey}`).css('background-color',colorstr(r,g,b))
+          }
+          else {
+              if(msec < period1 + period2){ // 最初の色と最後の色を交互に表示
+                  let t = msec - period1
+                  if((msec - period1) % step2 == 0){
+                      if(t % (step2 * 2) == 0){
+                          $(`#rect${changex}${changey}`).css('background-color',colorstr(startr,startg,startb))
+                      }
+                      else {
+                          $(`#rect${changex}${changey}`).css('background-color',colorstr(endr,endg,endb))
+                      }
+                  }
+              }
+	      else {
+                  msec = 0
+              }
+          }
+      },step)
+    </script>	
   </body>
 </html>
+        
