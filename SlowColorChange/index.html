@@ -8,6 +8,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   </head>
   <body>
+    <h1>Change Blindnessの実験</h1>
+    <ul>
+      <li>正方形形のひとつの色がゆっくり変化します</li>
+      <li>10秒後、変化前の色と変化後の色が交互に表示されます</li>
+      <li>どれの色が変化しているか、気付きにくいのではないでしょうか?</li>
+    </ul>
+    <div id="div" style="position:relative;"></div>
     <script type="text/javascript">
       const hex2 = (val) => `0${val.toString(16)}`.slice(-2)
       const colorstr = (r,g,b) => `#${hex2(r)}${hex2(g)}${hex2(b)}`
@@ -26,7 +33,8 @@
                   .css('background-color',
                        colorstr(random(256),random(256),random(256)))
                   .attr('id',`rect${x}${y}`)
-		  .appendTo($('body'))
+		  .appendTo($('#div'))
+		  //.appendTo($('body'))
           }
       }
       
