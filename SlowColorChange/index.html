@@ -20,9 +20,9 @@
     <div id="div" style="position:relative;"></div> <!-- relativeというのが必要?? -->
 
     <script type="text/javascript">
-      const hex2 = (val) => `0${val.toString(16)}`.slice(-2)
-      const colorstr = (r,g,b) => `#${hex2(r)}${hex2(g)}${hex2(b)}`
-      const random = (n) => Math.floor(Math.random()*n)
+      const hex2 = (val) => `0${val.toString(16)}`.slice(-2)        // 二桁16進数
+      const colorstr = (r,g,b) => `#${hex2(r)}${hex2(g)}${hex2(b)}` // HTMLの色表現を生成
+      const random = (n) => Math.floor(Math.random()*n)             // nまでの乱数整数を生成
 
       const SIZE = 5
       const changex = random(SIZE) // 変化する矩形の位置
@@ -42,15 +42,15 @@
           }
       }
 
-      let startr, startg, startb  // 変化前の色
-      let endr, endg, endb        // 変化後の色
+      let startR, startG, startB  // 変化前の色
+      let endR, endG, endB        // 変化後の色
       
-      [startr, startg, startb] = [random(256), random(256), random(256)]
+      [startR, startG, startB] = [random(256), random(256), random(256)]
       while(true){ // 変化後の色を決める - 変化前の色とかなり違う色を選ぶ
-          [endr, endg, endb] = [random(256), random(256), random(256)]
-          if(Math.abs(endr-startr) > 80 &&
-             Math.abs(endg-startg) > 80 &&
-             Math.abs(endb-startb) > 80){
+          [endR, endG, endB] = [random(256), random(256), random(256)]
+          if(Math.abs(endR-startR) > 80 &&
+             Math.abs(endG-startG) > 80 &&
+             Math.abs(endB-startB) > 80){
               break
           }
       }
@@ -64,17 +64,17 @@
           while(true){
 	      // 徐々に色を変更
               for(var i=0;i<STEPS;i++){
-                  let r = Math.floor((startr * (STEPS-i) + endr * i) / STEPS)
-                  let g = Math.floor((startg * (STEPS-i) + endg * i) / STEPS)
-                  let b = Math.floor((startb * (STEPS-i) + endb * i) / STEPS)
+                  let r = Math.floor((startR * (STEPS-i) + endR * i) / STEPS)
+                  let g = Math.floor((startG * (STEPS-i) + endG * i) / STEPS)
+                  let b = Math.floor((startB * (STEPS-i) + endB * i) / STEPS)
                   rect.css('background-color',colorstr(r,g,b))
                   await sleep(100)
               }
               // 最初の色と最後の色を交互に表示
 	      for(var i=0;i<3;i++){
-                  rect.css('background-color',colorstr(startr,startg,startb))
+                  rect.css('background-color',colorstr(startR,startG,startB))
                   await sleep(600)
-                  rect.css('background-color',colorstr(endr,endg,endb))
+                  rect.css('background-color',colorstr(endR,endG,endB))
                   await sleep(600)
               }
           }
