@@ -1,5 +1,7 @@
 <!--
   色がゆっくり変化することに気付けるかの実験
+
+  2024/9/6 増井俊之
 -->
 <html>
   <head>
@@ -8,11 +10,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   </head>
   <body>
-    <h1>Change Blindnessの実験</h1>
+    <h1>Change Blindness</h1>
     <ul>
-      <li>正方形形のひとつの色がゆっくり変化します</li>
+      <li>ひとつの正方形の色がゆっくり変化します</li>
       <li>10秒後、変化前の色と変化後の色が交互に表示されます</li>
-      <li>どれの色が変化しているか、気付きにくいのではないでしょうか?</li>
+      <li>どの正方形の色が変化しているか、気付きにくいのではないでしょうか?</li>
     </ul>
     <div id="div" style="position:relative;"></div>
     <script type="text/javascript">
@@ -21,7 +23,7 @@
       const random = (n) => Math.floor(Math.random()*n)
 
       const SIZE = 5
-      const changex = random(SIZE)    // 変化する矩形の位置
+      const changex = random(SIZE) // 変化する矩形の位置
       const changey = random(SIZE)
       
       for(let x=0;x<SIZE;x++){
@@ -91,4 +93,3 @@
     </script>	
   </body>
 </html>
-        
