@@ -30,12 +30,10 @@
           }
       }
       
-      // 変化前の色
-      let startr = random(256)
+      let startr = random(256) // 変化前の色
       let startg = random(256)
       let startb = random(256)
-      // 変化後の色
-      let endr, endg, endb
+      let endr, endg, endb     // 変化後の色
       
       // 変化後の色を決める
       // 変化前の色とかなり違う色を選ぶ
@@ -57,7 +55,7 @@
       let msec = 0          // 現在時刻
       let rect = $(`#rect${changex}${changey}`)
 
-      setInterval(function(){ // setInterval()でループを表現
+      setInterval(() => {
           msec += step
           if(msec < period1){ // 色を変化させる
               let r = Math.floor((startr * (period1-msec) + endr * msec) / period1)
