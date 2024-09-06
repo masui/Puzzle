@@ -15,14 +15,15 @@
       <li>ゆっくり変化するものに気付きにくいという性質の実験です</li>
       <li>ひとつの正方形の色がゆっくり変化するのに気付くでしょうか?</li>
       <li>10秒後、変化前の色と変化後の色が交互に表示されます</li>
-      <li>変化する正方形の座標: <span id="changerect" style="color:#ffffff;"></span> ⇦ 選択すると見えます</li>
+      <li>色が変化する正方形の座標: <span id="changerect" style="color:#ffffff;"></span> ⇦ 選択すると見えます</li>
     </ul>
     <div id="div" style="position:relative;"></div> <!-- relativeというのが必要?? -->
 
     <script type="text/javascript">
-      const hex2 = (val) => `0${val.toString(16)}`.slice(-2)        // 二桁16進数 e.g. 「3」⇒「03」
-      const colorstr = (r,g,b) => `#${hex2(r)}${hex2(g)}${hex2(b)}` // HTMLの色表現を生成
-      const random = (n) => Math.floor(Math.random()*n)             // nまでの乱数整数を生成
+      const hex2 = (val) => `0${val.toString(16)}`.slice(-2)                        // 二桁16進数 e.g. 「3」⇒「03」
+      const colorstr = (r,g,b) => `#${hex2(r)}${hex2(g)}${hex2(b)}`                 // HTMLの色表現を生成
+      const random = (n) => Math.floor(Math.random()*n)                             // nまでの乱数整数を生成
+      const sleep = (msTime) => new Promise(resolve => setTimeout(resolve, msTime)) // 無理矢理sleep()実装のための関数
 
       const SIZE = 5
       const changex = random(SIZE) // 変化する矩形の位置
@@ -54,13 +55,10 @@
               break
           }
       }
-      
-      let rect = $(`#rect${changex}${changey}`) // 色が変化する矩形
-
-      const sleep = (msTime) => new Promise(resolve => setTimeout(resolve, msTime)) // 無理矢理sleep()実装
 
       const STEPS = 100
       async function loop(){ // sleep()を使うためにasync functionを利用
+          let rect = $(`#rect${changex}${changey}`) // 色が変化する矩形
           while(true){
 	      // 徐々に色を変更 (10秒ぐらい)
               for(var i=0;i<STEPS;i++){
