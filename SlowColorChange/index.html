@@ -9,29 +9,20 @@
   </head>
   <body>
     <script type="text/javascript">
-      function hex2(val){
-          return ('0'+val.toString(16)).slice(-2)
-      }
+      const hex2 = (val) => `0${val.toString(16)}`.slice(-2)
+      const colorstr = (r,g,b) => `#${hex2(r)}${hex2(g)}${hex2(b)}`
+      const random = (n) => Math.floor(Math.random()*n)
+
+      const SIZE = 5
+      const changex = random(SIZE)    // 変化する矩形の位置
+      const changey = random(SIZE)
       
-      function random(n){
-          return Math.floor(Math.random()*n)
-      }
-      
-      function colorstr(r,g,b){
-          return `#${hex2(r)}${hex2(g)}${hex2(b)}`
-      }
-      
-      let changex = random(5)    // 変化する矩形の位置
-      let changey = random(5)
-      
-      for(let x=0;x<5;x++){
-          for(let y=0;y<5;y++){
+      for(let x=0;x<SIZE;x++){
+          for(let y=0;y<SIZE;y++){
               $('<div>')
                   .css('position','absolute')
-                  .css('width','100')
-                  .css('height','100')
-                  .css('top',y*100+20)
-                  .css('left',x*100+20)
+                  .css('width','100').css('height','100')
+                  .css('top',y*100+20).css('left',x*100+20)
                   .css('background-color',
                        colorstr(random(256),random(256),random(256)))
                   .attr('id',`rect${x}${y}`)
@@ -64,23 +55,25 @@
       const period2 = 7000  // 点滅させる時間
       const step2 = 1000    // 点滅周期
       let msec = 0          // 現在時刻
+      let rect = $(`#rect${changex}${changey}`)
+
       setInterval(function(){ // setInterval()でループを表現
           msec += step
           if(msec < period1){ // 色を変化させる
               let r = Math.floor((startr * (period1-msec) + endr * msec) / period1)
               let g = Math.floor((startg * (period1-msec) + endg * msec) / period1)
               let b = Math.floor((startb * (period1-msec) + endb * msec) / period1)
-              $(`#rect${changex}${changey}`).css('background-color',colorstr(r,g,b))
+              rect.css('background-color',colorstr(r,g,b))
           }
           else {
               if(msec < period1 + period2){ // 最初の色と最後の色を交互に表示
                   let t = msec - period1
                   if((msec - period1) % step2 == 0){
                       if(t % (step2 * 2) == 0){
-                          $(`#rect${changex}${changey}`).css('background-color',colorstr(startr,startg,startb))
+                          rect.css('background-color',colorstr(startr,startg,startb))
                       }
                       else {
-                          $(`#rect${changex}${changey}`).css('background-color',colorstr(endr,endg,endb))
+                          rect.css('background-color',colorstr(endr,endg,endb))
                       }
                   }
               }
