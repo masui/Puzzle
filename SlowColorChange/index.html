@@ -17,7 +17,7 @@
       <li>10秒後、変化前の色と変化後の色が交互に表示されます</li>
       <li>変化する正方形の座標: <span id="changerect" style="color:#ffffff;"></span> ⇦ 選択すると見えます</li>
     </ul>
-    <div id="div" style="position:relative;"></div> // relativeというのが必要??
+    <div id="div" style="position:relative;"></div> <!-- relativeというのが必要?? -->
 
     <script type="text/javascript">
       const hex2 = (val) => `0${val.toString(16)}`.slice(-2)
@@ -39,20 +39,15 @@
                        colorstr(random(256),random(256),random(256)))
                   .attr('id',`rect${x}${y}`)
 		  .appendTo($('#div'))
-		  //.appendTo($('body'))
           }
       }
+
+      let startr, startg, startb  // 変化前の色
+      let endr, endg, endb        // 変化後の色
       
-      let startr = random(256) // 変化前の色
-      let startg = random(256)
-      let startb = random(256)
-      let endr, endg, endb     // 変化後の色
-      
-      // 変化後の色を決める - 変化前の色とかなり違う色を選ぶ
-      while(true){
-          endr = random(256)
-          endg = random(256)
-          endb = random(256)
+      [startr, startg, startb] = [random(256), random(256), random(256)]
+      while(true){ // 変化後の色を決める - 変化前の色とかなり違う色を選ぶ
+          [endr, endg, endb] = [random(256), random(256), random(256)]
           if(Math.abs(endr-startr) > 80 &&
              Math.abs(endg-startg) > 80 &&
              Math.abs(endb-startb) > 80){
