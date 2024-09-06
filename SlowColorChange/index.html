@@ -58,38 +58,35 @@
           }
       }
       
-      const period1 = 10000 // ゆっくり色を変化させる時間
-      const step = 100      // 色変化の時間間隔
-      const period2 = 7000  // 点滅させる時間
-      const step2 = 1000    // 点滅周期
-      let msec = 0          // 現在時刻
-      let rect = $(`#rect${changex}${changey}`)
+      let rect = $(`#rect${changex}${changey}`) // 色が変化する矩形
 
-      setInterval(() => {
-          msec += step
-          if(msec < period1){ // 色を変化させる
-              let r = Math.floor((startr * (period1-msec) + endr * msec) / period1)
-              let g = Math.floor((startg * (period1-msec) + endg * msec) / period1)
-              let b = Math.floor((startb * (period1-msec) + endb * msec) / period1)
-              rect.css('background-color',colorstr(r,g,b))
-          }
-          else {
-              if(msec < period1 + period2){ // 最初の色と最後の色を交互に表示
-                  let t = msec - period1
-                  if((msec - period1) % step2 == 0){
-                      if(t % (step2 * 2) == 0){
-                          rect.css('background-color',colorstr(startr,startg,startb))
-                      }
-                      else {
-                          rect.css('background-color',colorstr(endr,endg,endb))
-                      }
-                  }
+      const sleep = (msTime) => new Promise(resolve => setTimeout(resolve, msTime)) // 無理矢理sleep()実装
+
+      // alert(`${changex},${changey}`)
+
+      const STEPS = 100
+      async function loop() {
+          while(true){
+	      // 徐々に色を変更
+              for(var i=0;i<STEPS;i++){
+                  let r = Math.floor((startr * (STEPS-i) + endr * i) / STEPS)
+                  let g = Math.floor((startg * (STEPS-i) + endg * i) / STEPS)
+                  let b = Math.floor((startb * (STEPS-i) + endb * i) / STEPS)
+                  rect.css('background-color',colorstr(r,g,b))
+                  await sleep(100)
               }
-	      else {
-                  msec = 0
+              // 最初の色と最後の色を交互に表示
+	      for(var i=0;i<3;i++){
+                  rect.css('background-color',colorstr(startr,startg,startb))
+                  await sleep(600)
+                  rect.css('background-color',colorstr(endr,endg,endb))
+                  await sleep(600)
               }
           }
-      },step)
+      }
+
+      loop()
+
     </script>	
   </body>
 </html>
