@@ -15,6 +15,7 @@
       <li>ゆっくり変化するものに気付きにくいという性質の実験です</li>
       <li>ひとつの正方形の色がゆっくり変化するのに気付くでしょうか?</li>
       <li>10秒後、変化前の色と変化後の色が交互に表示されます</li>
+      <li>変化する正方形の座標: <span id="changerect" style="color:#ffffff;"></span></li>
     </ul>
     <div id="div" style="position:relative;"></div>
     <script type="text/javascript">
@@ -25,6 +26,7 @@
       const SIZE = 5
       const changex = random(SIZE) // 変化する矩形の位置
       const changey = random(SIZE)
+      $('#changerect').text(`${changex}:${changey}`)
       
       for(let x=0;x<SIZE;x++){
           for(let y=0;y<SIZE;y++){
@@ -62,10 +64,8 @@
 
       const sleep = (msTime) => new Promise(resolve => setTimeout(resolve, msTime)) // 無理矢理sleep()実装
 
-      // alert(`${changex},${changey}`)
-
       const STEPS = 100
-      async function loop() {
+      async function loop(){ // sleep()を使うためにasync functionを利用
           while(true){
 	      // 徐々に色を変更
               for(var i=0;i<STEPS;i++){
