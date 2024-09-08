@@ -55,21 +55,28 @@
           }
       }
 
-      let STEPS = 100
+      let 遷移時間 = 10000
+
+      let step = 100 // stepミリ秒ごとに色を更新
+      let STEPS = 遷移時間 / step
+      // 速度をmSでURLで指定できるようにする
+      // index.html?30 とか
+      // デフォルトだと100 = 10秒
       if(a = window.location.search.match(/\d+/)){
-	  STEPS = a[0]
+	  遷移時間 = a[0]
+	  STEPS = a[0] / step
       }
       
       async function loop(){ // sleep()を使うためにasync functionを利用
           let rect = $(`#rect${changex}${changey}`) // 色が変化する矩形
           while(true){
-	      // 徐々に色を変更 (10秒ぐらい)
+	      // 徐々に色を変更
               for(var i=0;i<STEPS;i++){
                   let r = Math.floor((startR * (STEPS-i) + endR * i) / STEPS)
                   let g = Math.floor((startG * (STEPS-i) + endG * i) / STEPS)
                   let b = Math.floor((startB * (STEPS-i) + endB * i) / STEPS)
                   rect.css('background-color',colorstr(r,g,b))
-                  await sleep(100)
+                  await sleep(step)
               }
               // 最初の色と最後の色を交互に表示
 	      for(var i=0;i<3;i++){
