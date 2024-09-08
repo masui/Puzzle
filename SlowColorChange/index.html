@@ -55,7 +55,11 @@
           }
       }
 
-      const STEPS = 100
+      let STEPS = 100
+      if(a = window.location.search.match(/\d+/)){
+	  STEPS = a[0]
+      }
+      
       async function loop(){ // sleep()を使うためにasync functionを利用
           let rect = $(`#rect${changex}${changey}`) // 色が変化する矩形
           while(true){
