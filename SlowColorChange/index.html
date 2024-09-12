@@ -62,7 +62,7 @@
       // 速度をmSでURLで指定できるようにする
       // index.html?30 とか
       // デフォルトだと100 = 10秒
-      if(a = window.location.search.match(/\d+/)){
+      if(a = window.location.search.match(/^\d+/)){
 	  遷移時間 = a[0]
 	  STEPS = a[0] / step
       }
