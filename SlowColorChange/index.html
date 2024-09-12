@@ -62,10 +62,19 @@
       // 速度をmSでURLで指定できるようにする
       // index.html?30 とか
       // デフォルトだと100 = 10秒
+      document.location.search.substring(1).split('&').forEach((s) => {
+          if(s != ''){
+	      if(a = s.match(/^\d+/)){
+		  STEPS = a[0] / step
+	      }
+          }
+      })
+      /*
       if(a = window.location.search.match(/^\d+/)){
 	  遷移時間 = a[0]
 	  STEPS = a[0] / step
       }
+      */
       
       async function loop(){ // sleep()を使うためにasync functionを利用
           let rect = $(`#rect${changex}${changey}`) // 色が変化する矩形
